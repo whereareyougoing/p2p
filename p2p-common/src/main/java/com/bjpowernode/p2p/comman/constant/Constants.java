@@ -10,4 +10,12 @@ public class Constants {
 	public static final String ALL_USER_COUNT = "allUserCount";
 
 	public static final String ALL_BID_MONEY = "allBidMoney";
+
+	public static final Integer PRODUCT_TYPE_X = 0;
+	public static final Integer PRODUCT_TYPE_U = 1;
+	public static final Integer PRODUCT_TYPE_S = 2;
+
+	public static final String CAPTCHA = "captcha";
+	public static final String ERROR_MESSAGE = "errorMessage";
+	public static final String OK = "ok";
 }

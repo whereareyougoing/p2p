@@ -21,4 +21,6 @@
     <dubbo:service interface="com.bjpowernode.p2p.service.user.UserService"
                    ref="userServiceImpl" version="1.0.0" timeout="15000"></dubbo:service>
 
+    <dubbo:service interface="com.bjpowernode.p2p.service.user.FinanceAccountService"
+                   ref="financeAccountServiceImpl" version="1.0.0" timeout="15000"></dubbo:service>
 </beans>

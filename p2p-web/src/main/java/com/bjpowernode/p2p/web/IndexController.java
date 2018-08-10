@@ -1,9 +1,11 @@
 package com.bjpowernode.p2p.web;
 
 import com.bjpowernode.p2p.comman.constant.Constants;
+import com.bjpowernode.p2p.model.loan.LoanInfo;
 import com.bjpowernode.p2p.service.loan.BidInfoService;
 import com.bjpowernode.p2p.service.loan.LoanInfoService;
 import com.bjpowernode.p2p.service.user.UserService;
+import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -22,10 +25,13 @@ public class IndexController {
 
 
 	@Autowired
+	@SuppressWarnings ( "SpringJavaAutowiringInspection" )
 	private LoanInfoService loanInfoService;
 	@Autowired
+	@SuppressWarnings ( "SpringJavaAutowiringInspection" )
 	private UserService userService;
 	@Autowired
+	@SuppressWarnings ( "SpringJavaAutowiringInspection" )
 	private BidInfoService bidInfoService;
 
 	@RequestMapping(value = "index",method = RequestMethod.POST)
@@ -44,6 +50,24 @@ public class IndexController {
 		model.addAttribute ( Constants.ALL_BID_MONEY,allBidMoney);
 
 //		根据产品表示获取产品列表，分页
+		Map<String,Object> paramMap = Maps.newHashMap ();
+		paramMap.put ( "currentPage",0);
+
+		paramMap.put ( "productType", Constants.PRODUCT_TYPE_X );
+		paramMap.put ( "pageSize",1 );
+		List<LoanInfo> xLoanInfoList = loanInfoService.queryLoanInfoListByProductType(paramMap);
+
+		paramMap.put ( "productType",Constants.PRODUCT_TYPE_U );
+		paramMap.put ( "pageSize",4 );
+		List<LoanInfo> uLoanInfoList = loanInfoService.queryLoanInfoListByProductType(paramMap);
+
+		paramMap.put ( "productType",Constants.PRODUCT_TYPE_S );
+		paramMap.put ( "pageSize",8 );
+		List<LoanInfo> sLoanInfoList = loanInfoService.queryLoanInfoListByProductType(paramMap);
+
+		model.addAttribute("xLoanInfoList",xLoanInfoList);
+		model.addAttribute("uLoanInfoList",uLoanInfoList);
+		model.addAttribute("sLoanInfoList",sLoanInfoList);
 
 
 		return "index";

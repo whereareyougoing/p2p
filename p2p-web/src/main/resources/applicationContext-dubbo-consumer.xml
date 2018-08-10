@@ -19,5 +19,6 @@
                      check="false"></dubbo:reference>
     <dubbo:reference id="UserService" interface="com.bjpowernode.p2p.service.user.UserService"
                      check="false"></dubbo:reference>
-
+    <dubbo:reference id="FinanceAccountService" interface="com.bjpowernode.p2p.service.user.FinanceAccountService"
+                     check="false"></dubbo:reference>
 </beans>

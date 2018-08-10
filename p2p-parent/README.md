@@ -33,3 +33,9 @@ fmt时间格式化标签 yyyy-MM-dd HH:mm:ss
 strtodate
 simpleDateFormate取得时候
 
+注册：<br>
+图形验证码<br>
+验证各种信息<br>
+
+jsp选择器：九大选择器
+

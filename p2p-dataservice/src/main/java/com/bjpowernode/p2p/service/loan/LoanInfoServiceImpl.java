@@ -3,9 +3,13 @@ package com.bjpowernode.p2p.service.loan;
 import com.bjpowernode.p2p.comman.constant.Constants;
 
 import com.bjpowernode.p2p.mapper.loan.LoanInfoMapper;
+import com.bjpowernode.p2p.model.loan.LoanInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -32,5 +36,10 @@ public class LoanInfoServiceImpl implements LoanInfoService {
 
 		return historyAverageRate;
 
+	}
+
+	@Override
+	public List<LoanInfo> queryLoanInfoListByProductType(Map<String, Object> paramMap) {
+		return loanInfoMapper.selectLoanInfoByPage(paramMap);
 	}
 }
