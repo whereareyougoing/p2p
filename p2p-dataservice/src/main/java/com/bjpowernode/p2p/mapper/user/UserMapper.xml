@@ -171,4 +171,10 @@
       SELECT COUNT(1)
       FROM u_user
     </select>
+
+    <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="string">
+        SELECT <include refid="Base_Column_List"/>
+        FROM u_user
+        WHERE phone = #{phone}
+    </select>
 </mapper>

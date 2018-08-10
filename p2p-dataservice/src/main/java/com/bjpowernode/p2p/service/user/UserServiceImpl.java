@@ -2,6 +2,7 @@ package com.bjpowernode.p2p.service.user;
 
 import com.bjpowernode.p2p.comman.constant.Constants;
 import com.bjpowernode.p2p.mapper.user.UserMapper;
+import com.bjpowernode.p2p.model.user.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.BoundValueOperations;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -17,7 +18,9 @@ public class UserServiceImpl implements UserService {
 
 	@Autowired
 	private RedisTemplate<String,Object> redisTemplate;
+
 	@Autowired
+	@SuppressWarnings ( "SpringJavaAutowiringInspection" )
 	private UserMapper userMapper;
 
 	@Override
@@ -33,5 +36,10 @@ public class UserServiceImpl implements UserService {
 			boundValueOperations.set ( Constants.ALL_USER_COUNT,allUserCount );
 		}
 		return allUserCount;
+	}
+
+	@Override
+	public User queryUserPhone(String phone) {
+		return userMapper.selectUserByPhone(phone);
 	}
 }
