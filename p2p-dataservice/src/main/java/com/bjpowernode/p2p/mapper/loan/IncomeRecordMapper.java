@@ -3,6 +3,9 @@ package com.bjpowernode.p2p.mapper.loan;
 import com.bjpowernode.p2p.model.loan.IncomeRecord;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface IncomeRecordMapper {
     /**
@@ -52,4 +55,7 @@ public interface IncomeRecordMapper {
      * @mbggenerated Wed Aug 08 16:37:15 CST 2018
      */
     int updateByPrimaryKey(IncomeRecord record);
+
+	List<IncomeRecord> selectIncomeRecordByPage(Map<String, Object> paramMap);
+
 }

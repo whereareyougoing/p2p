@@ -106,7 +106,7 @@ function checkCaptcha() {
     } else {
     //    提交后台验证
         $.ajax({
-            url:"loan/checkCaptcha"
+            url:"loan/checkCaptcha",
             type:"post",
             data:{
                 "captcha":captcha

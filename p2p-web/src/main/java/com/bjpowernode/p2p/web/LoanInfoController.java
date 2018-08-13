@@ -44,7 +44,11 @@ public class LoanInfoController {
 			paramMap.put ( "productType",ptype );
 		}
 
+//		分页查询商品列表
 
+		// todo 投资金额
+
+//		投资排行榜
 
 
 	}

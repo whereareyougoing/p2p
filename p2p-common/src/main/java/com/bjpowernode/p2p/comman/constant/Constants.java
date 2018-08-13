@@ -18,4 +18,11 @@ public class Constants {
 	public static final String CAPTCHA = "captcha";
 	public static final String ERROR_MESSAGE = "errorMessage";
 	public static final String OK = "ok";
+
+	public static final String SUCCESS = "success";
+	public static final String FAIL = "fail";
+	public static final String SESSION_USER = "user";
+	public static final Double AVAILABLE_MONEY = 888.0;
+	public static final String INVEST_TOP = "investTop";
+
 }

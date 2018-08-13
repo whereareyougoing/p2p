@@ -41,3 +41,19 @@ jsp选择器：九大选择器
 
 gauva标准化
 
+投资：
+
+
+
+超卖：
+
+投资排行榜：
+
+spring task表达式：<br>
+cron:  ,  -  *  / <br>
+
+
+sql里面的currentDate包括年月日<br>
+now() 包括年月日时分秒
+ 
+
