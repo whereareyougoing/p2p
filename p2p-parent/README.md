@@ -7,7 +7,6 @@ service层命名规则
 
 查询query，更新modify，增加add，删除remove
 
-
 redisTemplete redis模板对象
 
 opsForValue
@@ -55,5 +54,13 @@ cron:  ,  -  *  / <br>
 
 sql里面的currentDate包括年月日<br>
 now() 包括年月日时分秒
+
+
+注册：<br>
+
+
+导入本地依赖
+
+加载系统配置文件
  
 

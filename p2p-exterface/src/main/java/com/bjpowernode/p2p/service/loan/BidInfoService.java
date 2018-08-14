@@ -16,5 +16,5 @@ public interface BidInfoService {
 
 	List<UserBid> queryUserBidTop();
 
-	
+
 }
