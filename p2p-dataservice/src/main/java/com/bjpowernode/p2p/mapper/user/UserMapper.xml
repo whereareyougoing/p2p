@@ -167,14 +167,28 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+    <!--获取平台注册总人数-->
     <select id="selectAllUserCount" resultType="java.lang.Long">
-      SELECT COUNT(1)
-      FROM u_user
+        SELECT COUNT(*) FROM u_user
     </select>
 
-    <select id="selectUserByPhone" resultMap="BaseResultMap" parameterType="string">
-        SELECT <include refid="Base_Column_List"/>
-        FROM u_user
-        WHERE phone = #{phone}
+    <!--根据手机号查询用户信息-->
+    <select id="selectUserByPhone" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        u_user
+        WHERE
+        phone = #{phone}
+    </select>
+
+    <!--根据手机号和登录密码查询用户信息-->
+    <select id="selectUserByPhoneAndLoginPassword" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        u_user
+        WHERE
+        phone = #{0} and login_password = #{1}
     </select>
 </mapper>

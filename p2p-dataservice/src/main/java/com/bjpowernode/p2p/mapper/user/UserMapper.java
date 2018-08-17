@@ -57,8 +57,25 @@ public interface UserMapper {
 	 * 查询所有的注册用户
 	 * @return
 	 */
+	/**
+	 * 获取平台注册总人数
+	 * @return
+	 */
 	Long selectAllUserCount();
 
+	/**
+	 * 根据手机号查询用户信息
+	 * @param phone
+	 * @return
+	 */
 	User selectUserByPhone(String phone);
+
+	/**
+	 * 根据手机号和登录密码查询用户信息
+	 * @param phone
+	 * @param loginPassword
+	 * @return
+	 */
+	User selectUserByPhoneAndLoginPassword(String phone, String loginPassword);
 
 }

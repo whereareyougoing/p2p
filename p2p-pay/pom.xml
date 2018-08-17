@@ -115,6 +115,19 @@
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/alipay-sdk-java20170324180803.jar</systemPath>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.github.wxpay/wxpay-sdk -->
+        <dependency>
+            <groupId>com.github.wxpay</groupId>
+            <artifactId>wxpay-sdk</artifactId>
+            <version>0.0.3</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.bjpowernode.p2p</groupId>
+            <artifactId>p2p-common</artifactId>
+            <version>1.0.0</version>
+        </dependency>
+
     </dependencies>
 
 

@@ -3,6 +3,9 @@ package com.bjpowernode.p2p.mapper.loan;
 import com.bjpowernode.p2p.model.loan.RechargeRecord;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface RechargeRecordMapper {
     /**
@@ -52,4 +55,25 @@ public interface RechargeRecordMapper {
      * @mbggenerated Wed Aug 08 16:37:15 CST 2018
      */
     int updateByPrimaryKey(RechargeRecord record);
+
+	/**
+	 * 根据用户标识分页查询充值记录
+	 * @param paramMap
+	 * @return
+	 */
+	List<RechargeRecord> selectRechargeRecordByPage(Map<String, Object> paramMap);
+
+	/**
+	 * 查询用户充值记录总数
+	 * @param paramMap
+	 * @return
+	 */
+	Long selectTotal(Map<String, Object> paramMap);
+
+	/**
+	 * 根据充值订单号更新充值记录
+	 * @param rechargeRecord
+	 * @return
+	 */
+	int updateRechargeRecordByRechargeNo(RechargeRecord rechargeRecord);
 }

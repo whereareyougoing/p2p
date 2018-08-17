@@ -3,6 +3,8 @@ package com.bjpowernode.p2p.mapper.user;
 import com.bjpowernode.p2p.model.user.FinanceAccount;
 import org.springframework.stereotype.Repository;
 
+import java.util.Map;
+
 @Repository
 public interface FinanceAccountMapper {
     /**
@@ -52,4 +54,32 @@ public interface FinanceAccountMapper {
      * @mbggenerated Wed Aug 08 16:37:15 CST 2018
      */
     int updateByPrimaryKey(FinanceAccount record);
+
+	/**
+	 * 根据用户标识获取帐户可用资金信息
+	 * @param uid
+	 * @return
+	 */
+	FinanceAccount selectFinanceAccountByUid(Integer uid);
+
+	/**
+	 * 用户投资：更新帐户可用余额
+	 * @param paramMap
+	 * @return
+	 */
+	int updateFinanceAccountByBid(Map<String, Object> paramMap);
+
+	/**
+	 * 收益返还：更新帐户可用余额
+	 * @param paramMap
+	 * @return
+	 */
+	int updateFinanceAccountByIncomeBack(Map<String, Object> paramMap);
+
+	/**
+	 * 用户充值：更新帐户可用余额
+	 * @param paramMap
+	 * @return
+	 */
+	int updateFinanceAccountByRecharge(Map<String, Object> paramMap);
 }

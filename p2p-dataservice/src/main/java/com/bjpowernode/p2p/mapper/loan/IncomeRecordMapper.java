@@ -56,6 +56,18 @@ public interface IncomeRecordMapper {
      */
     int updateByPrimaryKey(IncomeRecord record);
 
+	/**
+	 * 根据用户标识分页查询收益记录
+	 * @param paramMap
+	 * @return
+	 */
 	List<IncomeRecord> selectIncomeRecordByPage(Map<String, Object> paramMap);
+
+	/**
+	 * 根据收益状态且收益时间与当前时间相同的收益记录
+	 * @param incomeStatus
+	 * @return
+	 */
+	List<IncomeRecord> selectIncomeRecordByIncomeStatusAndIncomeDate(Integer incomeStatus);
 
 }

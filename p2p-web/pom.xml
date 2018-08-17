@@ -116,6 +116,12 @@
             <artifactId>jackson-annotations</artifactId>
         </dependency>
 
+        <!-- 阿里巴巴json解析包start -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+
         <!-- 文件IO操作包start -->
         <dependency>
             <groupId>commons-io</groupId>
@@ -125,6 +131,17 @@
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>core</artifactId>
+            <version>3.0.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.zxing</groupId>
+            <artifactId>javase</artifactId>
+            <version>3.0.0</version>
         </dependency>
 
 

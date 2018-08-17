@@ -64,8 +64,38 @@ public interface LoanInfoMapper {
      */
     int updateByPrimaryKey(LoanInfo record);
 
+	/**
+	 * 获取平台历史平均年化收益率
+	 * @return
+	 */
 	Double selectHistoryAverageRate();
 
+	/**
+	 * 分页查询产品信息列表
+	 * @param paramMap
+	 * @return
+	 */
 	List<LoanInfo> selectLoanInfoByPage(Map<String, Object> paramMap);
+
+	/**
+	 * 查询产品的数量
+	 * @param paramMap
+	 * @return
+	 */
+	Long selectTotal(Map<String, Object> paramMap);
+
+	/**
+	 * 更新产品剩余可投金额
+	 * @param paramMap
+	 * @return
+	 */
+	int updateLeftProductMoneyByLoanId(Map<String, Object> paramMap);
+
+	/**
+	 * 根据产品状态获取产品列表
+	 * @param productStatus
+	 * @return
+	 */
+	List<LoanInfo> selectLoanInfoByProductStatus(Integer productStatus);
 
 }

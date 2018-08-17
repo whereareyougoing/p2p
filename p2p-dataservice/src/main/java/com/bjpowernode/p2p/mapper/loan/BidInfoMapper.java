@@ -3,6 +3,9 @@ package com.bjpowernode.p2p.mapper.loan;
 import com.bjpowernode.p2p.model.loan.BidInfo;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Map;
+
 @Repository
 public interface BidInfoMapper {
     /**
@@ -58,5 +61,33 @@ public interface BidInfoMapper {
 	 * @return
 	 */
 	Double selectAllBidMoney();
+
+	/**
+	 * 根据产品标识获取产品的所有投资记录（包含用户信息）
+	 * @param loanId
+	 * @return
+	 */
+	List<BidInfo> selectBidInfoListByLoanId(Integer loanId);
+
+	/**
+	 * 根据用户标识分页查询投资记录
+	 * @param paramMap
+	 * @return
+	 */
+	List<BidInfo> selectBidInfoByPage(Map<String, Object> paramMap);
+
+	/**
+	 * 查询当前用户投资记录总数
+	 * @param paramMap
+	 * @return
+	 */
+	Long selectTotal(Map<String, Object> paramMap);
+
+	/**
+	 * 根据产品标识获取产品详情（不包含用户信息）
+	 * @param loanId
+	 * @return
+	 */
+	List<BidInfo> selectBidInfoByLoanId(Integer loanId);
 
 }

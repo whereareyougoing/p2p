@@ -15,10 +15,19 @@
 
     <dubbo:reference id="loanInfoService" interface="com.bjpowernode.p2p.service.loan.LoanInfoService"
                      check="false"></dubbo:reference>
+
     <dubbo:reference id="bidInfoService" interface="com.bjpowernode.p2p.service.loan.BidInfoService"
                      check="false"></dubbo:reference>
-    <dubbo:reference id="UserService" interface="com.bjpowernode.p2p.service.user.UserService"
+
+    <dubbo:reference id="userService" interface="com.bjpowernode.p2p.service.user.UserService"
                      check="false"></dubbo:reference>
-    <dubbo:reference id="FinanceAccountService" interface="com.bjpowernode.p2p.service.user.FinanceAccountService"
+
+    <dubbo:reference id="financeAccountService" interface="com.bjpowernode.p2p.service.user.FinanceAccountService"
+                     check="false"></dubbo:reference>
+
+    <dubbo:reference id="onlyNumberService" interface="com.bjpowernode.p2p.service.loan.OnlyNumberService"
+                     check="false"></dubbo:reference>
+
+    <dubbo:reference id="rechargeRecoudService" interface="com.bjpowernode.p2p.service.loan.RechargeRecoudService"
                      check="false"></dubbo:reference>
 </beans>

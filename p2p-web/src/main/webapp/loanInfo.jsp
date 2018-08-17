@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<!DOCTYPE html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
@@ -137,18 +137,23 @@
                         <dl class="usable">
                             <dt>我的账户可用</dt>
                             <dd>资金(元)：
+                                <c:choose>
+                                    <c:when test="${empty user}">
+                                        <!-- 判断用户是否登录：未登录，显示登录连接 -->
+                                        <span style="font-size:18px;color:#ff6161;vertical-align:bottom;"><a
+                                                href="${pageContext.request.contextPath}/login.jsp">请登录</a></span>
+                                    </c:when>
+                                    <c:otherwise>
+                                        <!-- 判断用户是否登录：已登录，显示可用余额 -->
+                                         <span style="font-size:18px;color:#ff6161;vertical-align:bottom;">${financeAccount.availableMoney}</span>
+                                    </c:otherwise>
+                                </c:choose>
 
-                                <!-- 判断用户是否登录：未登录，显示登录连接 -->
-                                <span style="font-size:18px;color:#ff6161;vertical-align:bottom;"><a
-                                        href="${pageContext.request.contextPath}/login.jsp">请登录</a></span>
-
-                                <!-- 判断用户是否登录：已登录，显示可用余额 -->
-                                <%-- <span style="font-size:18px;color:#ff6161;vertical-align:bottom;">${financeAccount.availableMoney}</span> --%>
 
                             </dd>
                         </dl>
                         <div class="expect-box">
-                            <div class="expect-money">预计本息收入(元)：<span id="shouyi" class="money"></span><span
+                            <div class="expect-money">预计本息收入(元)：<span id="shouyi" class="money">--</span><span
                                     class="prompt" style="display:block;">请在下方输入投资金额</span></div>
                             <input type="text" id="bidMoney" name="bidMoney" onblur="checkMoney();"
                                    placeholder="请输入投资金额，应为100元的整倍数" maxlength="9"/>
@@ -186,55 +191,63 @@
 <!--页脚end-->
 
 <script type="text/javascript">
-
     var contextPath = "${pageContext.request.contextPath}";
 
-    // 验证投资金额
+    //验证投资金额
     function checkMoney() {
-
         //获取投资金额
-        var bidMoney = $("bidMoney").val();
+        var bidMoney = $("#bidMoney").val();
         var rate = "${loanInfo.rate}";
         var productType = "${loanInfo.productType}";
         var cycle = "${loanInfo.cycle}";
 
-//        投资金额不能为空
-        if ('' == bidMoney){
+
+        //投资金额不能为空
+        if ("" == bidMoney) {
             $(".max-invest-money").html("");
             $(".max-invest-money").html("投资金额不能为空");
             return false;
-        }else if (isNaN(bidMoney)){
+        } else if(isNaN(bidMoney)) {
+            //投资金额只支持数字
             $(".max-invest-money").html("");
             $(".max-invest-money").html("投资金额只支持数字");
             return false;
-        }else if (bidMoney <= 0){
+        } else if(bidMoney <= 0) {
+            //投资金额必须大于0
             $(".max-invest-money").html("");
             $(".max-invest-money").html("投资金额必须大于0");
             return false;
-        }else if (bidMoney%100 != 0){
+        } else if(bidMoney % 100 != 0) {
+            //投资金额必须为100的整数倍
             $(".max-invest-money").html("");
-            $(".max-invest-money").html("投资金额必须是100的整数倍");
+            $(".max-invest-money").html("投资金额必须为100的整数倍");
             return false;
-        }else {
+        } else {
             $(".max-invest-money").html("");
+            //计算收益 = 投资金额 * 利率;
+            //收益 = 投资金额 * 天利率 * 投资天数;
+
+            //产品根据投资时间单位划分为：天：新手宝，月：优选和散标
             var incomeMoney = "";
 
-            if ("0" == productType){
+            if ("0" == productType) {
+                //新手宝，收益 = 投资金额 * 天利率 * 投资天数;
                 incomeMoney = bidMoney * (rate / 100 / 365) * cycle;
-            }else {
-                incomeMoney = bidMoney * (rate / 100 /365) * (cycle * 30);
+            } else {
+                //优先和散标
+                incomeMoney = bidMoney * (rate / 100 / 365) * (cycle * 30);
             }
-
-            incomeMoney = Math.round(incomeMoney*Math.pow(10,2)) / Math.pow(10,2);
+            //pow(x,y)指的是x的y次幂
+            incomeMoney = Math.round(incomeMoney * Math.pow(10,2)) / Math.pow(10,2);
             $("#shouyi").html(incomeMoney);
         }
 
-
-
+        return true;
     }
 
-//    用户投资
-    function inverst() {
+
+    //用户投资
+    function invest() {
 
         var user = "${user}";
         var name = "${user.name}";
@@ -242,66 +255,70 @@
         var bidMoney = $("#bidMoney").val();
         var bidMinLimit = "${loanInfo.bidMinLimit}";
         var bidMaxLimit = "${loanInfo.bidMaxLimit}";
-        var leftProcutMoney = "${loanInfo.leftProductMoey}";
+        var leftProductMoney = "${loanInfo.leftProductMoney}";
         var availableMoney = "${financeAccount.availableMoney}";
         var loanId = "${loanInfo.id}";
 
+        if (checkMoney()) {
 
-
-        if (checkMoney()){
-            if ("" == user){
-                if (confirm("您尚未登录，请登录")){
-                    window.localtion.href = "login.jsp";
+            //判断用户是否登录
+            if ("" == user) {
+                if (confirm("您尚未登录，请登录")) {
+                    window.location.href = contextPath + "/login.jsp";
                 }
                 return false;
-            }else if ("" == name){
-//                判断用户时候实名认证
-                if (confirm("您尚未实名，请实名")){
-                    window.localtion.href = "realName.jsp";
+            } else if("" == name) {
+                //判断用户是否实名认证
+                if (confirm("您尚未实名认证，请认证")) {
+                    window.location.href = contextPath + "/realName.jsp";
                 }
                 return false;
-            }else if (parseFloat(bidMoney) < parseFloat(bidMinLimit)){
-//                判断投资金额是否低于最小投资额
+            } else if(parseFloat(bidMoney) < parseFloat(bidMinLimit)) {
+                //判断投资金额是否低于最小投资金额
                 $(".max-invest-money").html("");
-                $(".max-invest-money").html("投资金额不能低于"+ bidMinLimit+"元");
+                $(".max-invest-money").html("投资金额不得低于" + bidMinLimit + "元");
                 return false;
-            }else if (parseFloat(bidMoney)>parseFloat(bidMaxLimit)){
-//                判断投资金额对否超过单笔最大投资金额
+            } else if(parseFloat(bidMoney) > parseFloat(bidMaxLimit)) {
+                //判断投资金额是否超过单笔投资金额
                 $(".max-invest-money").html("");
-                $(".max-invest-money").html("单笔投资金额不能高于"+ bidMaxLimit+"元");
+                $(".max-invest-money").html("单笔投资金额不得高于" + bidMaxLimit + "元");
                 return false;
-            }else if (parseFloat(bidMoney) > parseFloat(leftProcutMoney)){
+            } else if(parseFloat(bidMoney) > parseFloat(leftProductMoney)) {
+                //判断投资金额是否超过产品剩余可投金额
                 $(".max-invest-money").html("");
-                $(".max-invest-money").html("投资金额不能超过剩余可投金额"+ bidMinLimit+"元");
+                $(".max-invest-money").html("投资金额不得超过产品剩余可投金额");
                 return false;
-            }else if (parseFloat(bidMoney)> parseFloat(availableMoney)){
+            } else if(parseFloat(bidMoney) > parseFloat(availableMoney)) {
+                //判断投资金额是否超过帐户余额
                 $(".max-invest-money").html("");
-                $(".max-invest-money").html("余额不足请充值"+ bidMinLimit+"元");
+                $(".max-invest-money").html("帐户余额不足，请充值");
                 return false;
-            }else {
+            } else {
                 $(".max-invest-money").html("");
 
                 $.ajax({
-                   url:contextPath+"/loan/inverst",
-                   type:"post",
-                    data:{
-                       "loanId" : loanId,
-                        "bidMoney":bidMoney
-                    },
+                    url:contextPath + "/loan/invest",
+                    type:"post",
+                    data:"loanId="+loanId+"&bidMoney="+bidMoney,
                     success:function (jsonObject) {
-                        if (jsonObject.errorMessage == "ok"){
+                        if (jsonObject.errorMessage == "OK") {
                             $("#failurePayment").show();
                             $("#dialog-overlay1").show();
-                        }else {
+                        } else {
                             $(".max-invest-money").html("");
-                            $(".max-invest-money").html("投资人数太多，请稍后重试");
+                            $(".max-invest-money").html("投资人数太多了，请稍后重试...");
                         }
+                    },
+                    error:function () {
+                        $(".max-invest-money").html("");
+                        $(".max-invest-money").html("投资人数太多了，请稍后重试...");
                     }
                 });
             }
         }
-
     }
+
+
 
 
 

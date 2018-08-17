@@ -166,10 +166,27 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="selectIncomeRecordByPage" resultType="com.bjpowernode.p2p.model.loan.IncomeRecord">
-
+    <!--根据用户标识分页查询收益记录-->
+    <select id="selectIncomeRecordByPage" resultMap="IncomeRecordLoanBaseResultMap">
+        SELECT
+        a.*,b.*
+        FROM
+        b_income_record a
+        LEFT JOIN
+        b_loan_info b
+        ON
+        a.loan_id = b.id
+        WHERE
+        a.uid = #{uid}
+        ORDER BY
+        a.income_date DESC
+        limit #{currentPage},#{pageSize}
     </select>
 
+    <!--根据收益状态且收益时间与当前时间相同的收益记录-->
+    <select id="selectIncomeRecordByIncomeStatusAndIncomeDate" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List"/> from b_income_record where income_date = CURDATE() and income_status = #{incomeStatus}
+    </select>
 
 
 </mapper>

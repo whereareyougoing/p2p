@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="com.bjpowernode.p2p.mapper.FinanceAccountMapper" >
+<mapper namespace="com.bjpowernode.p2p.mapper.user.FinanceAccountMapper" >
   <resultMap id="BaseResultMap" type="com.bjpowernode.p2p.model.user.FinanceAccount" >
     <!--
       WARNING - @mbggenerated
@@ -108,4 +108,44 @@
       available_money = #{availableMoney,jdbcType=DOUBLE}
     where id = #{id,jdbcType=INTEGER}
   </update>
+
+    <!--根据用户标识获取帐户资金信息-->
+    <select id="selectFinanceAccountByUid" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        u_finance_account
+        WHERE
+        uid = #{uid}
+    </select>
+
+    <!--用户投资：更新帐户可用余额-->
+    <update id="updateFinanceAccountByBid">
+        UPDATE
+        u_finance_account
+        SET
+        available_money = available_money - #{bidMoney}
+        WHERE
+        uid = #{uid} and (available_money - #{bidMoney}) >= 0
+    </update>
+
+    <!--收益返还：更新帐户可用余额-->
+    <update id="updateFinanceAccountByIncomeBack">
+        UPDATE
+        u_finance_account
+        SET
+        available_money = #{bidMoney} + #{incomeMoney} + available_money
+        WHERE
+        uid = #{uid}
+    </update>
+
+    <!--用户充值：更新帐户可用余额-->
+    <update id="updateFinanceAccountByRecharge">
+        UPDATE
+        u_finance_account
+        SET
+        available_money = available_money + #{rechargeMoney}
+        WHERE
+        uid = #{uid}
+    </update>
 </mapper>

@@ -262,16 +262,59 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
-    <select id="selectLoanInfoByPage" parameterType="map" resultMap="BaseResultMap">
-        SELECT <include refid="Base_Column_List"/>
-        FROM b_loan_info
+    <!--获取平台历史平均年化收益率-->
+    <select id="selectHistoryAverageRate" resultType="java.lang.Double">
+        SELECT CAST(avg(rate) AS DECIMAL(10,2)) from b_loan_info
+    </select>
+
+    <!--分页查询产品信息列表-->
+    <select id="selectLoanInfoByPage" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        b_loan_info
         <where>
             <if test="productType != null">
-                product_type = #{ productType }
+                product_type = #{productType}
             </if>
         </where>
-        order by release_time DESC
+        ORDER BY
+        release_time DESC
         limit #{currentPage},#{pageSize}
+    </select>
+
+    <!--查询产品数量-->
+    <select id="selectTotal" resultType="java.lang.Long">
+        select
+        count(*)
+        FROM
+        b_loan_info
+        <where>
+            <if test="productType != null">
+                product_type = #{productType}
+            </if>
+        </where>
+    </select>
+
+    <!--更新产品剩余可投金额-->
+    <update id="updateLeftProductMoneyByLoanId">
+        UPDATE
+        b_loan_info
+        SET
+        left_product_money = left_product_money - #{bidMoney},
+        version = version+1
+        WHERE
+        id = #{loanId} and version = #{version} and (left_product_money - #{bidMoney}) >= 0
+    </update>
+
+    <!--根据产品状态获取产品列表-->
+    <select id="selectLoanInfoByProductStatus" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        b_loan_info
+        WHERE
+        product_status = #{productStatus}
     </select>
 
 </mapper>

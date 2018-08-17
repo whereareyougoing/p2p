@@ -145,8 +145,55 @@
     where id = #{id,jdbcType=INTEGER}
   </update>
 
+    <!--获取平台累计投资总金额-->
     <select id="selectAllBidMoney" resultType="java.lang.Double">
         SELECT sum(bid_money)
         FROM b_bid_info
+    </select>
+
+    <!--根据产品标识获取产品的所有投资记录（包含用户信息）-->
+    <select id="selectBidInfoListByLoanId" resultMap="BidUserBaseResultMap">
+        SELECT
+        a.*,u.*
+        FROM
+        b_bid_info a
+        LEFT JOIN
+        u_user u
+        ON
+        a.uid = u.id
+        WHERE
+        a.loan_id = #{loanId}
+    </select>
+
+    <!--根据用户标识分页查询投资记录-->
+    <select id="selectBidInfoByPage" resultMap="BidLoanBaseResultMap">
+        SELECT
+        a.*,b.*
+        FROM
+        b_bid_info a
+        LEFT JOIN
+        b_loan_info b
+        ON
+        a.loan_id = b.id
+        WHERE
+        a.uid = #{uid}
+        ORDER BY
+        a.bid_time DESC
+        limit #{currentPage},#{pageSize}
+    </select>
+
+    <!--查询当前用户的投资记录总数-->
+    <select id="selectTotal" resultType="java.lang.Long">
+        SELECT count(*) FROM b_bid_info where uid = #{uid}
+    </select>
+
+    <!--根据产品标识获取产品详情（不包含用户信息）-->
+    <select id="selectBidInfoByLoanId" resultMap="BaseResultMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM
+        b_bid_info
+        WHERE
+        loan_id = #{loanId}
     </select>
 </mapper>
